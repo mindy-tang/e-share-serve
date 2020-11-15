@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cate = require("./routes/cate");
 const book = require("./routes/book");
+const recommend = require("./routes/recommend");
+const comment = require("./routes/comment");
 const app = express();
 
 //静态资源
@@ -14,6 +16,11 @@ app.use(bodyParser.json());
 app.use("/cate",cate);
 //book模块
 app.use("/book",book);
+//推荐模块
+app.use("/recommend",recommend);
+//留言模块
+app.use("/comment",comment);
+
 
 
 

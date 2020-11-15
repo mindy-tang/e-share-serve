@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
 const url = require("url");
 const BookModel = require("../models/book");
@@ -43,8 +44,8 @@ router.get("/query",(req, res)=>{
 router.get("/detail", (req,res)=>{
     const id = url.parse(req.url,true).query.id;
     console.log("id=",id);
-    
-    BookModel.find({"_id":id}, (err, docs) => {
+    const sid = mongoose.Types.ObjectId(id)
+    BookModel.findOne({"_id":sid}, (err, docs) => {
         if(err){
             console.log("模糊查询book列表失败:", err);
             return;
@@ -59,6 +60,8 @@ router.post("/add", (req, res)=> {
         ...req.body,
         create_time:Date.now()
     });
+    console.log("新增的book:", book);
+    
     book.save((err)=>{
         if (err) {
             console.log("新增book失败:",err);

@@ -9,7 +9,6 @@ router.get("/list",(req, res)=>{
             console.log("cate全列表查询失败:",err);
             return;
         }
-        console.log("查询cate全列表成功:",docs);
         res.send(docs);
     });
 });

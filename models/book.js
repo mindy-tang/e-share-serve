@@ -16,6 +16,7 @@ const BookShema = mongoose.Schema({
     },
     cover:String,
     introduction:String,
+    addr:String,
     cate_no:String,
     cate_name:String,
     tags:String,
