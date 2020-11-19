@@ -19,9 +19,9 @@ router.post("/add", (req, res) => {
         ...req.body,
         create_time: Date.now()
     });
-    console.log("新增的cate:", book);
+    console.log("新增的cate:", cate);
 
-    book.save((err) => {
+    cate.save((err) => {
         if (err) {
             console.log("新增cate失败:", err);
             return;
