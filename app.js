@@ -16,11 +16,11 @@ app.use(bodyParser.json());
 //分类模块
 app.use("/api/cate", cate);
 //book模块
-app.use("/book", book);
+app.use("/api/book", book);
 //推荐模块
-app.use("/recommend", recommend);
+app.use("/api/recommend", recommend);
 //留言模块
-app.use("/comment", comment);
+app.use("/api/comment", comment);
 //管理员模块
 app.use("/api/admin", admin);
 
