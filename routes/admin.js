@@ -2,37 +2,41 @@ const express = require("express");
 const router = express.Router();
 const url = require("url");
 const mongoose = require("mongoose");
-const CateModel = require("../models/cate");
+const AdminModel = require("../models/admin");
+const JwtUtil = require("../utils/jwtUtil");
 
-//查询cate全列表
+//查询用户全列表
 router.get("/list", (req, res) => {
-    CateModel.find({}, (err, docs) => {
+    AdminModel.find({}, (err, docs) => {
         if (err) {
-            console.log("cate全列表查询失败:", err);
+            console.log("admin全列表查询失败:", err);
             return;
         }
-        docs.sort((a, b) => a.no - b.no);
         res.send(docs);
     });
 });
 
-//根据名称模糊查询cate列表
-router.get("/query", (req, res) => {
-    const keyword = url.parse(req.url, true).query.keyword;
-    const keywordRegExp = new RegExp(keyword);
-    CateModel.find({ "name": keywordRegExp }, (err, docs) => {
+//验证登录
+router.post("/login", (req, res) => {
+    const param = req.body;
+    AdminModel.findOne({ "account": param.account, "passport": param.passport }, (err, docs) => {
         if (err) {
-            console.log("模糊查询cate列表失败:", err);
+            res.send({ msg: '账号或密码错误' });
             return;
         }
-        docs.sort((a, b) => a.no - b.no);
-        res.send(docs);
+        //登录成功
+        //通过用户_id生成token
+        console.log("login_docs:", docs);
+
+        const jwt = new JwtUtil(docs._id);
+        const token = jwt.generateToken();
+        res.status(200).send({ msg: '登录成功', token: token });
     });
 })
 
-//新增cate
+//新增用户
 router.post("/add", (req, res) => {
-        const cate = new CateModel({
+        const cate = new AdminModel({
             ...req.body,
             create_time: Date.now()
         });
@@ -45,12 +49,12 @@ router.post("/add", (req, res) => {
             res.status(200).send("新增成功");
         });
     })
-    //编辑cate
+    //编辑用户
 router.post("/update", (req, res) => {
         const cate = req.body;
         const sid = mongoose.Types.ObjectId(cate._id);
 
-        CateModel.update({ "_id": sid }, {...cate }, (err) => {
+        AdminModel.update({ "_id": sid }, {...cate }, (err) => {
             if (err) {
                 console.log("编辑cate失败:", err);
                 return;
@@ -58,12 +62,12 @@ router.post("/update", (req, res) => {
             res.status(200).send("编辑成功");
         })
     })
-    //根据id删除cate
+    //根据id删除用户
 router.get("/delete", (req, res) => {
     const id = url.parse(req.url, true).query.id;
     const sid = mongoose.Types.ObjectId(id);
 
-    CateModel.findByIdAndDelete(sid, (err) => {
+    AdminModel.findByIdAndDelete(sid, (err) => {
 
         if (err) {
             console.log("删除cate失败:", err);
