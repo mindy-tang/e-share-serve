@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //分类模块
-app.use("/cate", cate);
+app.use("/api/cate", cate);
 //book模块
 app.use("/book", book);
 //推荐模块
