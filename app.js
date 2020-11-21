@@ -22,7 +22,7 @@ app.use("/recommend", recommend);
 //留言模块
 app.use("/comment", comment);
 //管理员模块
-app.use("/admin", admin);
+app.use("/api/admin", admin);
 
 
 
