@@ -5,7 +5,9 @@ const RecommendSchema = mongoose.Schema({
     name_cn: String,
     author: String,
     reason: String,
-    referrer_id: String,
+    // referrer_id: String,
+    user_name: String,
+    avatar: String,
     create_time: Date,
     status: Number,
     stars: Number
